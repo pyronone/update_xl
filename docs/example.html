@@ -177,7 +177,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#detailed-process" id="toc-detailed-process" class="nav-link" data-scroll-target="#detailed-process">Detailed Process</a></li>
   <li><a href="#step-by-step" id="toc-step-by-step" class="nav-link" data-scroll-target="#step-by-step">Step by step</a></li>
-  <li><a href="#vba-scripts" id="toc-vba-scripts" class="nav-link" data-scroll-target="#vba-scripts">VBA scripts</a></li>
+  <li><a href="#vba-scripts" id="toc-vba-scripts" class="nav-link" data-scroll-target="#vba-scripts">VBA scripts</a>
+  <ul class="collapse">
+  <li><a href="#copy-original" id="toc-copy-original" class="nav-link" data-scroll-target="#copy-original">Copy original</a></li>
+  <li><a href="#paste-result" id="toc-paste-result" class="nav-link" data-scroll-target="#paste-result">Paste result</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -285,6 +289,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>image</figcaption>
 </figure>
 </div>
+<section id="copy-original" class="level3">
+<h3 class="anchored" data-anchor-id="copy-original">Copy original</h3>
 <pre class="vba"><code>Sub copy_subset()
 
 Dim input_col_heads As Variant
@@ -340,28 +346,38 @@ Selection.Delete
 
 Application.ScreenUpdating = True
 
-End Sub
-
-
-
-
-Sub paste_subset()
+End Sub</code></pre>
+</section>
+<section id="paste-result" class="level3">
+<h3 class="anchored" data-anchor-id="paste-result">Paste result</h3>
+<pre class="vba"><code>Sub paste_subset()
 
 Application.ScreenUpdating = False
 
 ' select key col header on original data sheet
 original_data_sht = ActiveSheet.Name
-col_head_row = ActiveCell.Row
 key_col = ActiveCell.Value
 
-updated_data_sht = InputBox("Enter name of update result sheet: ")
+col_head_row = ActiveCell.Row
+ActiveCell.End(xlDown).Select
+t_row_count = ActiveCell.Row
+row_count = t_row_count + 1 - col_head_row ' updated 20240615 - ensures no empty cells
+
+' input - enter result sheet
+updated_data_sht = InputBox("Enter name of update result sheet: ", "Input", "result")
 Sheets(updated_data_sht).Select
 
 ' get dimensions
-Cells(1, 1).End(xlDown).Select
-row_count = ActiveCell.Row
+'Cells(1, 1).End(xlDown).Select
+'row_count = ActiveCell.Row
+
 Cells(1, 1).End(xlToRight).Select
 col_count = ActiveCell.Column
+
+Debug.Print ("Shape:")
+Debug.Print (row_count - 1)
+Debug.Print (col_count - 1)
+Debug.Print ("")
 
 ' loop
 For i = 1 To col_count
@@ -392,16 +408,16 @@ For i = 1 To col_count
     End If
 Next i
 
-Application.DisplayAlerts = False
+'Application.DisplayAlerts = False
 'Sheets(updated_data_sht).Delete
-Application.DisplayAlerts = True
+'Application.DisplayAlerts = True
 
 Application.ScreenUpdating = True
 
-End Sub
-</code></pre>
+End Sub</code></pre>
 
 
+</section>
 </section>
 </section>
 
