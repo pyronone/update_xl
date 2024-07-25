@@ -41,7 +41,120 @@
     "href": "compare.html",
     "title": "01_compare",
     "section": "",
-    "text": "00 compare\n\nsource\n\ncompare_cols\n\n compare_cols (export_dir:str, t_df:pandas.core.frame.DataFrame,\n               key_col:str='id', f_prefix:str='subdir', c_prefix:str='_',\n               l_suffix:str='x', r_suffix:str='y')\n\n…\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nexport_dir\nstr\n\nstr\n\n\nt_df\nDataFrame\n\npd.DataFrame - merged df\n\n\nkey_col\nstr\nid\nstr - key\n\n\nf_prefix\nstr\nsubdir\nstr - file prefix\n\n\nc_prefix\nstr\n_\nstr - col prefix\n\n\nl_suffix\nstr\nx\nstr - suffix for left table src\n\n\nr_suffix\nstr\ny\nstr - suffix for right table src\n\n\nReturns\nNone\n\n\n\n\n\n\nsource\n\n\nsummarize_comparison\n\n summarize_comparison (dir_:str, export_path:str=None)\n\n…\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndir_\nstr\n\nstr\n\n\nexport_path\nstr\nNone\nstr\n\n\nReturns\nNone"
+    "text": "This was first created when tasked with comparing STCO buyout data files against the database. Figured I could use it here for some (mostly) automated testing.\n\nsource\n\n\n\n compare_cols_minimal (export_dir:str,\n                       merged_df:pandas.core.frame.DataFrame,\n                       key_col:str='id')\n\n…\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nexport_dir\nstr\n\nstr\n\n\nmerged_df\nDataFrame\n\nresult of pd.merge\n\n\nkey_col\nstr\nid\nstr\n\n\nReturns\nNone\n\n\n\n\n\n\nsource\n\n\n\n\n summarize_comparison (dir_:str, ret:bool=False, export_path:str=None,\n                       key_col:str='id')\n\n…\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndir_\nstr\n\nstr - directory used in compare_cols\n\n\nret\nbool\nFalse\nif True, returns df instead of exporting\n\n\nexport_path\nstr\nNone\ndefaults to auto-named file in dir_\n\n\nkey_col\nstr\nid\nkey column\n\n\nReturns\ntyping.Optional[pandas.core.frame.DataFrame]",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#bools",
+    "href": "compare.html#bools",
+    "title": "01_compare",
+    "section": "bools",
+    "text": "bools\n\nsource\n\nclean_bools\n\n clean_bools (t_dict:dict)\n\n…\n\n\n\n\nType\nDetails\n\n\n\n\nt_dict\ndict\ndict\n\n\nReturns\ndict\ndict",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#ints",
+    "href": "compare.html#ints",
+    "title": "01_compare",
+    "section": "ints",
+    "text": "ints\n\nsource\n\nclean_ints\n\n clean_ints (t_dict:dict)\n\n…\n\n\n\n\nType\nDetails\n\n\n\n\nt_dict\ndict\ndict\n\n\nReturns\ndict\ndict\n\n\n\n\nsource\n\n\nclean_ints2\n\n clean_ints2 (t_dict:dict)\n\n…\n\n\n\n\nType\nDetails\n\n\n\n\nt_dict\ndict\ndict\n\n\nReturns\ndict\ndict",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#convert-to-str",
+    "href": "compare.html#convert-to-str",
+    "title": "01_compare",
+    "section": "convert to str",
+    "text": "convert to str\n\nsource\n\nconv2str\n\n conv2str (t_dict:dict)\n\nto match formatting of summarize_comparison\n\n\n\n\nType\nDetails\n\n\n\n\nt_dict\ndict\ndict\n\n\nReturns\ndict\ndict",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#main",
+    "href": "compare.html#main",
+    "title": "01_compare",
+    "section": "main",
+    "text": "main\n\nsource\n\nclean_changelog\n\n clean_changelog (changelog:pandas.core.frame.DataFrame)\n\n…\n\n\n\n\nType\nDetails\n\n\n\n\nchangelog\nDataFrame\npd.DataFrame\n\n\nReturns\nDataFrame\npd.DataFrame",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#section",
+    "href": "compare.html#section",
+    "title": "01_compare",
+    "section": "1",
+    "text": "1\n\n\nCode\n# * TEST\nif REFRESH:\n    og = pd.read_excel(\"../tests/test_compare/begin.xlsx\", sheet_name=\"original\")\n    updated = pd.read_excel(\"../tests/test_compare/end.xlsx\", sheet_name=\"original\")\n    tm = pd.merge(og, updated, on=\"id\", how=\"inner\")\n    assert og.shape[0] == updated.shape[0]\n    assert og.shape[0] == tm.shape[0]\n\n    # compare_cols_minimal(\"../tests/test_compare/out/\", tm)\n    df = summarize_comparison(\"../tests/test_compare/out/\", True)\n\n    changelog = pd.read_excel(\n        \"../tests/test_compare/end.xlsx\", sheet_name=\"changelog\", converters={\"id\": str}\n    )\n    changelog = clean_changelog(changelog)\n\n\n\n\nCode\n# * DOC\ndf\n\n\n\n\n\n\n\n\n\n\nid\ninfo\n\n\n\n\n0\n9230418\n{'amt': ['8682.97', ''], 'comment': ['Vitae pr...\n\n\n1\n3829278\n{'amt': ['94.58', '123.45'], 'rand_int': ['185...\n\n\n2\n3696181\n{'comment': ['Perferendis earum omnis adipisci...\n\n\n3\n3100145\n{'comment': ['Alias vitae beatae commodi accus...\n\n\n4\n6514643\n{'comment': ['Repudiandae cum assumenda rem ut...\n\n\n5\n7914200\n{'comment': ['Et dolorem eaque eius suscipit.'...\n\n\n6\n3582428\n{'comment': ['Libero veritatis illo iure et ve...\n\n\n7\n6923572\n{'comment': ['Velit repellendus illo temporibu...\n\n\n8\n5366721\n{'comment': ['Quos atque rerum provident magni...\n\n\n9\n4678758\n{'dob': ['2010-07-17 00:00:00', '1901-01-01 00...\n\n\n10\n5256904\n{'dob_verified': ['1', '0']}\n\n\n11\n8384660\n{'fname': ['Destiny', 'Bob'], 'lname': ['White...\n\n\n\n\n\n\n\n\n\n\nCode\n# * DOC\nchangelog\n\n\n\n\n\n\n\n\n\n\nid\nchanges\n\n\n\n\n0\n3696181\n{'comment': ['Perferendis earum omnis adipisci...\n\n\n1\n3100145\n{'comment': ['Alias vitae beatae commodi accus...\n\n\n2\n6514643\n{'comment': ['Repudiandae cum assumenda rem ut...\n\n\n3\n7914200\n{'comment': ['Et dolorem eaque eius suscipit.'...\n\n\n4\n3582428\n{'comment': ['Libero veritatis illo iure et ve...\n\n\n5\n9230418\n{'comment': ['Vitae praesentium aliquam qui qu...\n\n\n6\n6923572\n{'comment': ['Velit repellendus illo temporibu...\n\n\n7\n5366721\n{'comment': ['Quos atque rerum provident magni...\n\n\n8\n8384660\n{'fname': ['Destiny', 'Bob'], 'lname': ['White...\n\n\n9\n4678758\n{'dob': ['2010-07-17 00:00:00', '1901-01-01 00...\n\n\n10\n5256904\n{'dob_verified': ['1', '0']}\n\n\n11\n3829278\n{'amt': ['94.58', '123.45'], 'rand_int': ['185...\n\n\n\n\n\n\n\n\n\n\nCode\n# * TEST\nif REFRESH:\n    tm = pd.merge(df, changelog, \"inner\", \"id\")\n    assert len(tm) == len(df)\n    assert len(tm) == len(changelog)\n    m = tm[\"info\"] == tm[\"changes\"]\n    assert tm[~m].shape[0] == 0\n\n\n\n\nCode\n# * DOC\ntm\n\n\n\n\n\n\n\n\n\n\nid\ninfo\nchanges\n\n\n\n\n0\n9230418\n{'amt': ['8682.97', ''], 'comment': ['Vitae pr...\n{'comment': ['Vitae praesentium aliquam qui qu...\n\n\n1\n3829278\n{'amt': ['94.58', '123.45'], 'rand_int': ['185...\n{'amt': ['94.58', '123.45'], 'rand_int': ['185...\n\n\n2\n3696181\n{'comment': ['Perferendis earum omnis adipisci...\n{'comment': ['Perferendis earum omnis adipisci...\n\n\n3\n3100145\n{'comment': ['Alias vitae beatae commodi accus...\n{'comment': ['Alias vitae beatae commodi accus...\n\n\n4\n6514643\n{'comment': ['Repudiandae cum assumenda rem ut...\n{'comment': ['Repudiandae cum assumenda rem ut...\n\n\n5\n7914200\n{'comment': ['Et dolorem eaque eius suscipit.'...\n{'comment': ['Et dolorem eaque eius suscipit.'...\n\n\n6\n3582428\n{'comment': ['Libero veritatis illo iure et ve...\n{'comment': ['Libero veritatis illo iure et ve...\n\n\n7\n6923572\n{'comment': ['Velit repellendus illo temporibu...\n{'comment': ['Velit repellendus illo temporibu...\n\n\n8\n5366721\n{'comment': ['Quos atque rerum provident magni...\n{'comment': ['Quos atque rerum provident magni...\n\n\n9\n4678758\n{'dob': ['2010-07-17 00:00:00', '1901-01-01 00...\n{'dob': ['2010-07-17 00:00:00', '1901-01-01 00...\n\n\n10\n5256904\n{'dob_verified': ['1', '0']}\n{'dob_verified': ['1', '0']}\n\n\n11\n8384660\n{'fname': ['Destiny', 'Bob'], 'lname': ['White...\n{'fname': ['Destiny', 'Bob'], 'lname': ['White...\n\n\n\n\n\n\n\n\n\n\nCode\n# * DOC\nm = tm[\"info\"] == tm[\"changes\"]\ntm[~m]\n\n\n\n\n\n\n\n\n\n\nid\ninfo\nchanges",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#section-1",
+    "href": "compare.html#section-1",
+    "title": "01_compare",
+    "section": "2",
+    "text": "2\n\n\nCode\n# * TEST\nif REFRESH:\n    og = pd.read_excel(\"../tests/new/0/og_db0 - Copy.xlsx\")\n    updated = pd.read_excel(\"../tests/new/0/og_db0.xlsx\")\n    tm = pd.merge(og, updated, on=\"id\", how=\"inner\")\n    assert og.shape[0] == updated.shape[0]\n    assert og.shape[0] == tm.shape[0]\n\n    # compare_cols_minimal(\"../tests/new/0/out/\", tm)\n    df = summarize_comparison(\"../tests/new/0/out/\", True)\n\n    changelog = pd.read_excel(\n        \"../tests/new/0/up1.xlsx\", sheet_name=\"changelog\", converters={\"id\": str}\n    )\n    changelog = clean_changelog(changelog)\n\n    tm = pd.merge(df, changelog, \"inner\", \"id\")\n    assert len(tm) == len(df)\n    assert len(tm) == len(changelog)\n    m = tm[\"info\"] == tm[\"changes\"]\n    assert tm[~m].shape[0] == 0",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#section-2",
+    "href": "compare.html#section-2",
+    "title": "01_compare",
+    "section": "3",
+    "text": "3\n\n\nCode\n# * TEST\nif REFRESH:\n    _tst(\"../tests/new/1\")",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#section-3",
+    "href": "compare.html#section-3",
+    "title": "01_compare",
+    "section": "4",
+    "text": "4\n\n\nCode\n# * TEST\nif REFRESH:\n    _tst(\"../tests/new/2\")",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#section-4",
+    "href": "compare.html#section-4",
+    "title": "01_compare",
+    "section": "5",
+    "text": "5\n\n\nCode\n# * TEST\nif REFRESH:\n    _tst(\"../tests/new/3\")",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#section-5",
+    "href": "compare.html#section-5",
+    "title": "01_compare",
+    "section": "6",
+    "text": "6\n\n\nCode\n# * TEST\nif REFRESH:\n    _tst(\"../tests/new/4\")",
+    "crumbs": [
+      "01_compare"
+    ]
+  },
+  {
+    "objectID": "compare.html#section-6",
+    "href": "compare.html#section-6",
+    "title": "01_compare",
+    "section": "7",
+    "text": "7\nID in update not in original data\n\n\nCode\n# * TEST\nwith pytest.raises(\n    AssertionError, match=\"Length mismatch after inner join for update_df\"\n):\n    uxl.main(\n        key_col=\"id\",\n        str_cols=[\"pc\"],\n        input_file=\"../tests/new/5/fail0.xlsx\",\n    )\n\n\nDuplicate ID in original\n\n\nCode\n# * TEST\nwith pytest.raises(Exception, match=\"Duplicate keys in original_df\"):\n    uxl.main(\n        key_col=\"id\",\n        str_cols=[\"pc\"],\n        input_file=\"../tests/new/5/fail1.xlsx\",\n    )\n\n\nDuplicate ID in updates tab\n\n\nCode\n# * TEST\nwith pytest.raises(Exception, match=\"Duplicate keys in update_df\"):\n    uxl.main(\n        key_col=\"id\",\n        str_cols=[\"pc\"],\n        input_file=\"../tests/new/5/fail2.xlsx\",\n    )\n\n\nDuplicate column name in update tab\n\n\nCode\n# * TEST\nwith pytest.raises(Exception, match=\"Check for duplicate column names in update df\"):\n    uxl.main(\n        key_col=\"id\",\n        str_cols=[\"pc\"],\n        input_file=\"../tests/new/5/fail3.xlsx\",\n    )",
+    "crumbs": [
+      "01_compare"
+    ]
   },
   {
     "objectID": "example.html",
