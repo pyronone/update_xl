@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="…">
+<meta name="description" content="Clean changelog to be more human readable. WIP">
 
-<title>00_core – update_xl</title>
+<title>04_changelog – update_xl</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -70,11 +104,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="00_core – update_xl">
-<meta property="og:description" content="…">
+<meta property="og:title" content="04_changelog – update_xl">
+<meta property="og:description" content="Clean changelog to be more human readable. WIP">
 <meta property="og:site_name" content="update_xl">
-<meta name="twitter:title" content="00_core – update_xl">
-<meta name="twitter:description" content="…">
+<meta name="twitter:title" content="04_changelog – update_xl">
+<meta name="twitter:description" content="Clean changelog to be more human readable. WIP">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -99,7 +133,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./core.html">00_core</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./changelog.html">04_changelog</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -119,7 +153,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./core.html" class="sidebar-item-text sidebar-link active">
+  <a href="./core.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">00_core</span></a>
   </div>
 </li>
@@ -137,7 +171,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./changelog.html" class="sidebar-item-text sidebar-link">
+  <a href="./changelog.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">04_changelog</span></a>
   </div>
 </li>
@@ -151,14 +185,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#init-fxs" id="toc-init-fxs" class="nav-link active" data-scroll-target="#init-fxs">00 init fxs</a>
+  <li><a href="#fxs" id="toc-fxs" class="nav-link active" data-scroll-target="#fxs">00 fxs</a>
   <ul class="collapse">
-  <li><a href="#yaml_helper" id="toc-yaml_helper" class="nav-link" data-scroll-target="#yaml_helper">yaml_helper</a></li>
-  <li><a href="#fp" id="toc-fp" class="nav-link" data-scroll-target="#fp">fp</a></li>
-  </ul></li>
-  <li><a href="#update" id="toc-update" class="nav-link" data-scroll-target="#update">01 update</a>
-  <ul class="collapse">
-  <li><a href="#main" id="toc-main" class="nav-link" data-scroll-target="#main">main</a></li>
+  <li><a href="#clean_changelog" id="toc-clean_changelog" class="nav-link" data-scroll-target="#clean_changelog">clean_changelog</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -168,12 +197,12 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">00_core</h1>
+<h1 class="title">04_changelog</h1>
 </div>
 
 <div>
   <div class="description">
-    …
+    Clean changelog to be more human readable. WIP
   </div>
 </div>
 
@@ -191,116 +220,18 @@ ul.task-list li input[type="checkbox"] {
 
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<section id="init-fxs" class="level1">
-<h1>00 init fxs</h1>
+<section id="fxs" class="level1">
+<h1>00 fxs</h1>
 <hr>
-<p><a href="https://github.com/pyronone/update_xl/blob/main/update_xl/test_update_xl.py#L39" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="yaml_helper" class="level3">
-<h3 class="anchored" data-anchor-id="yaml_helper">yaml_helper</h3>
+<p><a href="https://github.com/pyronone/update_xl/blob/main/update_xl/compare.py#L474" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="clean_changelog" class="level3">
+<h3 class="anchored" data-anchor-id="clean_changelog">clean_changelog</h3>
 <blockquote class="blockquote">
-<pre><code> yaml_helper (fpath:str='./config.yaml', mode:str='r', data:dict=None)</code></pre>
-</blockquote>
-<p>Helper function to read, write, append to files in yaml format. Checks for duplicate keys if reading or appending.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 25%">
-<col style="width: 34%">
-<col style="width: 34%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>fpath</td>
-<td>str</td>
-<td>./config.yaml</td>
-<td>str</td>
-</tr>
-<tr class="even">
-<td>mode</td>
-<td>str</td>
-<td>r</td>
-<td>str - r / a / w</td>
-</tr>
-<tr class="odd">
-<td>data</td>
-<td>dict</td>
-<td>None</td>
-<td>dict - cannot be None if writing or appending</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>dict</strong></td>
-<td></td>
-<td><strong>dict - data if reading, {‘r’: 0} if writing/appending</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p><a href="https://github.com/pyronone/update_xl/blob/main/update_xl/test_update_xl.py#L16" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="fp" class="level3">
-<h3 class="anchored" data-anchor-id="fp">fp</h3>
-<blockquote class="blockquote">
-<pre><code> fp (relative_fp:str, base_dir:str='.')</code></pre>
-</blockquote>
-<p>For referencing relative file paths in package directory.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>relative_fp</td>
-<td>str</td>
-<td></td>
-<td>str - eg. “../dir/file.txt”</td>
-</tr>
-<tr class="even">
-<td>base_dir</td>
-<td>str</td>
-<td>.</td>
-<td>str</td>
-</tr>
-<tr class="odd">
-<td><strong>Returns</strong></td>
-<td><strong>str</strong></td>
-<td></td>
-<td><strong>str</strong></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="update" class="level1">
-<h1>01 update</h1>
-<hr>
-<p><a href="https://github.com/pyronone/update_xl/blob/main/update_xl/core.py#L396" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="main" class="level3">
-<h3 class="anchored" data-anchor-id="main">main</h3>
-<blockquote class="blockquote">
-<pre><code> main (key_col:str, str_cols:list=None, input_file:str='./Book1.xlsx')</code></pre>
+<pre><code> clean_changelog (df:pandas.core.frame.DataFrame,
+                  _fp:str='./changelog.yml')</code></pre>
 </blockquote>
 <p>…</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 25%">
-<col style="width: 34%">
-<col style="width: 34%">
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -311,24 +242,18 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>key_col</td>
-<td>str</td>
+<td>df</td>
+<td>DataFrame</td>
 <td></td>
-<td>unique id column</td>
+<td>pd.DataFrame</td>
 </tr>
 <tr class="even">
-<td>str_cols</td>
-<td>list</td>
-<td>None</td>
-<td>Add all cols where there may be leading zeroes that should be preserved, or if the values should be read in as string.</td>
+<td>_fp</td>
+<td>str</td>
+<td>./changelog.yml</td>
+<td>str</td>
 </tr>
 <tr class="odd">
-<td>input_file</td>
-<td>str</td>
-<td>./Book1.xlsx</td>
-<td>name/path to input file</td>
-</tr>
-<tr class="even">
 <td><strong>Returns</strong></td>
 <td><strong>None</strong></td>
 <td></td>
@@ -336,6 +261,16 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+<div id="cell-4" class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># * </span><span class="al">TEST</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>rerun <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> rerun:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_excel(<span class="st">"../tests/clean_changelog/for_cleaning_changelog.xlsx"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    clean_changelog(df, <span class="st">"../tests/clean_changelog/test_res.yml"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 
 
 </section>
