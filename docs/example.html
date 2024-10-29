@@ -162,20 +162,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./compare.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">01_compare</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./example.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">03_example</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./changelog.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">04_changelog</span></a>
   </div>
 </li>
     </ul>
@@ -310,12 +298,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The ints aren’t really too big an issue - the only adverse effect is cluttering up the changelog, which could be cleaned separately.</p>
 <p>The boolean column might be an issue so it’s better to avoid booleans altogether and use a string representation instead (‘Y’/‘N’).</p>
+<p><strong>Update:</strong> As of v0.1.1, the changelog is no longer added as a separate sheet, but in YAML format for better human readability. See <code>example/new</code>.</p>
+<p>Ints are now always converted to floats, timestamps are cleaned up, and booleans converted to floats (1.0/0.0):</p>
+<div id="cell-14" class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># * DOC</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>uxl.yaml_helper(<span class="st">"../example/new/changelog_20241028_162017.yml"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>{'20241028_162017': [{'3696181': {'comment': {'before': 'Perferendis earum omnis adipisci laborum.',
+     'after': 'name s/b Elizabeth Daniels, note should be preserved'}}},
+  {'3100145': {'comment': {'before': 'Alias vitae beatae commodi accusamus facilis similique.',
+     'after': 'dob s/b 2008-04-16'}}},
+  {'6514643': {'comment': {'before': 'Repudiandae cum assumenda rem ut veniam tenetur odit.',
+     'after': 'dob verified s/b 1'}}},
+  {'7914200': {'comment': {'before': 'Et dolorem eaque eius suscipit.',
+     'after': 'amt s/b 9338.92'}}},
+  {'3582428': {'comment': {'before': 'Libero veritatis illo iure et vero ullam.',
+     'after': 'rand_int s/b 2223'}}},
+  {'9230418': {'comment': {'before': 'Vitae praesentium aliquam qui quae.',
+     'after': 'amt s/b blank'},
+    'amt': {'before': 8682.97, 'after': ''}}},
+  {'6923572': {'comment': {'before': 'Velit repellendus illo temporibus.',
+     'after': 'Velit repellendus illo temporibus. // this will be appended to end of existing comment'}}},
+  {'5366721': {'comment': {'before': 'Quos atque rerum provident magni adipisci.',
+     'after': 'dob verified was blank in original data'}}},
+  {'8384660': {'fname': {'before': 'Destiny', 'after': 'Bob'},
+    'lname': {'before': 'White', 'after': 'Builder'}}},
+  {'4678758': {'dob': {'before': '2010-07-17', 'after': '1901-01-01'}}},
+  {'5256904': {'dob_verified': {'before': 1.0, 'after': 0.0}}},
+  {'3829278': {'amt': {'before': 94.58, 'after': 123.45},
+    'rand_int': {'before': 185.0, 'after': 1.0}}}]}</code></pre>
+</div>
+</div>
 <p>The result is in the same order as the original data and can be copy/pasted into the original data via VBA script (or manually, if the dataset is small enough).</p>
-<p>Pasting in this way preserves any notes added to cells, as can be seen in <code>end.xlsx</code>: <img src="03_example_files/figure-html/cell-14-1-image.png" class="img-fluid" alt="screenshot3"></p>
+<p>Pasting in this way preserves any notes added to cells, as can be seen in <code>end.xlsx</code>: <img src="03_example_files/figure-html/cell-15-1-image.png" class="img-fluid" alt="screenshot3"></p>
 <p>Open the VBA console’s Immediate Window to double check what columns were updated. It should be noted that columns updated in this way need to have unique names, otherwise results may be unexpected.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03_example_files/figure-html/cell-16-1-image.png" class="img-fluid figure-img"></p>
+<p><img src="03_example_files/figure-html/cell-17-1-image.png" class="img-fluid figure-img"></p>
 <figcaption>screenshot4</figcaption>
 </figure>
 </div>
@@ -325,7 +347,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Easiest way to use these scripts is to add it to your <code>Personal.xlsb</code> file and add the commands to the ribbon. This way, you can run macros even in files without the <code>xlsm</code> extension.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03_example_files/figure-html/cell-18-1-image.png" class="img-fluid figure-img"></p>
+<p><img src="03_example_files/figure-html/cell-19-1-image.png" class="img-fluid figure-img"></p>
 <figcaption>image</figcaption>
 </figure>
 </div>

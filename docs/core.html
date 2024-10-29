@@ -125,20 +125,8 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./compare.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">01_compare</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./example.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">03_example</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./changelog.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">04_changelog</span></a>
   </div>
 </li>
     </ul>
@@ -158,7 +146,17 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#update" id="toc-update" class="nav-link" data-scroll-target="#update">01 update</a>
   <ul class="collapse">
-  <li><a href="#main" id="toc-main" class="nav-link" data-scroll-target="#main">main</a></li>
+  <li><a href="#helpers" id="toc-helpers" class="nav-link" data-scroll-target="#helpers">helpers</a></li>
+  <li><a href="#main" id="toc-main" class="nav-link" data-scroll-target="#main">main</a>
+  <ul class="collapse">
+  <li><a href="#main-1" id="toc-main-1" class="nav-link" data-scroll-target="#main-1">main</a></li>
+  </ul></li>
+  <li><a href="#refactor-changelog" id="toc-refactor-changelog" class="nav-link" data-scroll-target="#refactor-changelog">refactor changelog</a></li>
+  </ul></li>
+  <li><a href="#tests" id="toc-tests" class="nav-link" data-scroll-target="#tests">02 tests</a>
+  <ul class="collapse">
+  <li><a href="#helpers-1" id="toc-helpers-1" class="nav-link" data-scroll-target="#helpers-1">helpers</a></li>
+  <li><a href="#main-2" id="toc-main-2" class="nav-link" data-scroll-target="#main-2">main</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -194,7 +192,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="init-fxs" class="level1">
 <h1>00 init fxs</h1>
 <hr>
-<p><a href="https://github.com/pyronone/update_xl/blob/main/update_xl/test_update_xl.py#L39" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/pyronone/update_xl/blob/main/update_xl/test_update_xl.py#L50" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="yaml_helper" class="level3">
 <h3 class="anchored" data-anchor-id="yaml_helper">yaml_helper</h3>
 <blockquote class="blockquote">
@@ -244,7 +242,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/pyronone/update_xl/blob/main/update_xl/test_update_xl.py#L16" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/pyronone/update_xl/blob/main/update_xl/test_update_xl.py#L27" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="fp" class="level3">
 <h3 class="anchored" data-anchor-id="fp">fp</h3>
@@ -286,10 +284,15 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="update" class="level1">
 <h1>01 update</h1>
+<section id="helpers" class="level2">
+<h2 class="anchored" data-anchor-id="helpers">helpers</h2>
+</section>
+<section id="main" class="level2">
+<h2 class="anchored" data-anchor-id="main">main</h2>
 <hr>
-<p><a href="https://github.com/pyronone/update_xl/blob/main/update_xl/core.py#L396" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="main" class="level3">
-<h3 class="anchored" data-anchor-id="main">main</h3>
+<p><a href="https://github.com/pyronone/update_xl/blob/main/update_xl/core.py#L619" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="main-1" class="level3">
+<h3 class="anchored" data-anchor-id="main-1">main</h3>
 <blockquote class="blockquote">
 <pre><code> main (key_col:str, str_cols:list=None, input_file:str='./Book1.xlsx')</code></pre>
 </blockquote>
@@ -336,6 +339,19 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</section>
+</section>
+<section id="refactor-changelog" class="level2">
+<h2 class="anchored" data-anchor-id="refactor-changelog">refactor changelog</h2>
+</section>
+</section>
+<section id="tests" class="level1">
+<h1>02 tests</h1>
+<section id="helpers-1" class="level2">
+<h2 class="anchored" data-anchor-id="helpers-1">helpers</h2>
+</section>
+<section id="main-2" class="level2">
+<h2 class="anchored" data-anchor-id="main-2">main</h2>
 
 
 </section>
