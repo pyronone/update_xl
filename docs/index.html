@@ -133,14 +133,8 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#summarized-steps" id="toc-summarized-steps" class="nav-link active" data-scroll-target="#summarized-steps">Summarized Steps</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -168,27 +162,19 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <p>For when Excel is used as a database</p>
 </blockquote>
-<p>Despite being frowned upon, many organizations/teams continue to use Excel as a (pseudo) database due to its accessibility and familiarity. This package simplifies the process of updating such “databases”, providing a set of features to make such updates effortless and reliable.</p>
-<p>Key features include:</p>
+<p>Despite not being best practice, many organizations/teams continue to use Excel as a (pseudo) database due to its accessibility and familiarity. This package simplifies the process of updating such “databases”, providing a set of features to make data updates effortless and reliable.</p>
+<p><strong>Key features</strong></p>
 <ol type="1">
 <li>Only needing to provide data that needs to be updated. Blank cells in the update file are automatically filled with the original values, ensuring that existing data is not unintentionally overwritten.</li>
 <li>Comprehensive validation checks to ensure data integrity.</li>
 <li>Ability to append to, instead of overwrite, existing data. Useful for ‘comment’ columns, for instance.<br>
 </li>
-<li>Ability to preserve existing notes and formatting.</li>
-<li>Creates a human readable changelog showing exactly what was updated at what time.</li>
-</ol>
-<section id="summarized-steps" class="level2">
-<h2 class="anchored" data-anchor-id="summarized-steps">Summarized Steps</h2>
-<ol type="1">
-<li>Create a workbook with two sheets containing the original data and the update data.</li>
-<li>Run <code>core.main</code></li>
-<li>Paste result into original data file (either manually or w/ VBA)</li>
+<li>Ability to preserve existing notes and formatting in the original data file.</li>
+<li>Creates a human readable changelog showing exactly what was updated and when.</li>
 </ol>
 <p>A video demo and step-by-step example can be found in <code>03_example</code> in the <a href="https://pyronone.github.io/update_xl/example.html">documentation</a>.</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

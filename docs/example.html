@@ -177,6 +177,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#demo" id="toc-demo" class="nav-link active" data-scroll-target="#demo">Demo</a></li>
+  <li><a href="#summarized-steps" id="toc-summarized-steps" class="nav-link" data-scroll-target="#summarized-steps">Summarized Steps</a></li>
   <li><a href="#detailed-process" id="toc-detailed-process" class="nav-link" data-scroll-target="#detailed-process">Detailed Process</a>
   <ul class="collapse">
   <li><a href="#step-by-step" id="toc-step-by-step" class="nav-link" data-scroll-target="#step-by-step">Step by step</a></li>
@@ -241,6 +242,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+<section id="summarized-steps" class="level2">
+<h2 class="anchored" data-anchor-id="summarized-steps">Summarized Steps</h2>
+<ol type="1">
+<li>Create a workbook with two sheets containing the original data and the update data.</li>
+<li>Run <code>core.main</code></li>
+<li>Paste result into original data file, either manually or w/ the VBA macro found below</li>
+</ol>
+</section>
 <section id="detailed-process" class="level2">
 <h2 class="anchored" data-anchor-id="detailed-process">Detailed Process</h2>
 <ol type="1">
@@ -251,19 +260,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li>Rename the sheet w/ original data to <code>original</code> and rename the sheet w/ updates to <code>update</code>.</li>
 <li>Run the <code>core.main</code> function and copy the result sheet to the original data file.</li>
-<li>Run the <code>paste_subset</code> command. When prompted, enter the name of the result sheet (by default, it should be <code>result</code>).
+<li>Run the <code>paste_subset</code> VBA macro. When prompted, enter the name of the result sheet (by default, it should be <code>result</code>).
 <ul>
 <li>Alternatively, if the dataset is small enough, the result can be pasted in manually</li>
 </ul></li>
 </ol>
 <section id="step-by-step" class="level3">
 <h3 class="anchored" data-anchor-id="step-by-step">Step by step</h3>
+<p>Example files can be found <a href="https://github.com/pyronone/update_xl/tree/main/example">here</a>.</p>
 <p>Steps 1-2 will result in a file similar to <code>example/1_begin.xlsx</code>. Here you can see we have all the main data types in the original sheet: string, dates, boolean, float, and int.</p>
 <p>In the update sheet you will notice not all cells are filled in because they don’t need to be. If there are no changes, you can leave the cells blank and it won’t overwrite anything - they will be filled with the original values.</p>
 <p>Of note are cells G7 and F8. G7 will clear any existing data and F8 will append the comment to the existing data:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03_example_files/figure-html/cell-9-1-image.png" class="img-fluid figure-img"></p>
+<p><img src="03_example_files/figure-html/cell-11-1-image.png" class="img-fluid figure-img"></p>
 <figcaption>screenshot</figcaption>
 </figure>
 </div>
@@ -277,10 +287,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    input_file<span class="op">=</span><span class="st">"../example/begin.xlsx"</span>,</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The result is added to the same input file. Here we have renamed it to <code>2_middle.xlsx</code>.</p>
-<p>The changelog is exported in YAML format for better human readability:</p>
+<p>The changelog is exported in the current working directory in YAML format for better human readability:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03_example_files/figure-html/cell-13-1-image.png" class="img-fluid figure-img"></p>
+<p><img src="03_example_files/figure-html/cell-15-1-image.png" class="img-fluid figure-img"></p>
 <figcaption>changelog_screenshot</figcaption>
 </figure>
 </div>
@@ -288,14 +298,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Pasting in this way preserves any notes added to cells, as can be seen in <code>3_end.xlsx</code>:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03_example_files/figure-html/cell-14-1-image-2.png" class="img-fluid figure-img"></p>
+<p><img src="03_example_files/figure-html/cell-16-1-image-2.png" class="img-fluid figure-img"></p>
 <figcaption>result_screenshot</figcaption>
 </figure>
 </div>
 <p>Open the Immediate Window in the developer tab to double check what columns were updated. It should be noted that columns updated in this way need to have unique names, otherwise the result may be unexpected.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03_example_files/figure-html/cell-16-1-image.png" class="img-fluid figure-img"></p>
+<p><img src="03_example_files/figure-html/cell-18-1-image.png" class="img-fluid figure-img"></p>
 <figcaption>immediate_window</figcaption>
 </figure>
 </div>
@@ -303,10 +313,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="vba-scripts" class="level2">
 <h2 class="anchored" data-anchor-id="vba-scripts">VBA scripts</h2>
-<p>Easiest way to use these scripts is to add it to your <code>Personal.xlsb</code> file and add the commands to the ribbon. This way, you can run macros even in files without the <code>xlsm</code> extension.</p>
+<p>The easiest way to use these scripts is to add it to your <code>Personal.xlsb</code> file and add the commands to the ribbon. This way, you can run macros even in files without the <code>xlsm</code> extension.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="03_example_files/figure-html/cell-18-1-image-2.png" class="img-fluid figure-img"></p>
+<p><img src="03_example_files/figure-html/cell-20-1-image-2.png" class="img-fluid figure-img"></p>
 <figcaption>ribbon</figcaption>
 </figure>
 </div>
