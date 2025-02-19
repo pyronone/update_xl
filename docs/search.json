@@ -4,158 +4,17 @@
     "href": "index.html",
     "title": "update_xl",
     "section": "",
-    "text": "For when Excel is used as a database\n\nDespite not being best practice, many organizations/teams continue to use Excel as a (pseudo) database due to its accessibility and familiarity. This package simplifies the process of updating such “databases”, providing a set of features to make data updates effortless and reliable.\nKey features\n\nOnly needing to provide data that needs to be updated. Blank cells in the update file are automatically filled with the original values, ensuring that existing data is not unintentionally overwritten.\nComprehensive validation checks to ensure data integrity.\nAbility to append to, instead of overwrite, existing data. Useful for ‘comment’ columns, for instance.\n\nAbility to preserve existing notes and formatting in the original data file.\nCreates a human readable changelog showing exactly what was updated and when.\n\nA video demo and step-by-step example can be found in 03_example in the documentation.",
+    "text": "For when Excel is used as a database\n\nDespite not being best practice, many organizations/teams continue to use Excel as a (pseudo) database due to its accessibility and familiarity. This package simplifies the process of updating such “databases”, providing a set of features to make data updates effortless and reliable.\nKey features\n\nOnly needing to provide data that needs to be updated. Blank cells in the update file are automatically filled with the original values, ensuring that existing data is not unintentionally overwritten.\nComprehensive validation checks to ensure data integrity.\nAbility to append to, instead of overwrite, existing data. Useful for ‘comment’ columns, for instance.\n\nAbility to preserve existing notes and formatting in the original data file.\nCreates a human readable changelog showing exactly what was updated and when.\n\nA video demo and step-by-step example can be found in 01_example in the documentation.",
     "crumbs": [
       "update_xl"
     ]
-  },
-  {
-    "objectID": "example.html",
-    "href": "example.html",
-    "title": "03_example",
-    "section": "",
-    "text": "Code\nfrom IPython.display import HTML\n\n\nHTML(\n    \"\"\"\n&lt;video width=\"640\" height=\"480\" controls&gt;\n  &lt;source src=\"demo.mp4\" type=\"video/mp4\"&gt;\n&lt;/video&gt;\n\"\"\"\n)",
-    "crumbs": [
-      "03_example"
-    ]
-  },
-  {
-    "objectID": "example.html#demo",
-    "href": "example.html#demo",
-    "title": "03_example",
-    "section": "",
-    "text": "Code\nfrom IPython.display import HTML\n\n\nHTML(\n    \"\"\"\n&lt;video width=\"640\" height=\"480\" controls&gt;\n  &lt;source src=\"demo.mp4\" type=\"video/mp4\"&gt;\n&lt;/video&gt;\n\"\"\"\n)",
-    "crumbs": [
-      "03_example"
-    ]
-  },
-  {
-    "objectID": "example.html#summarized-steps",
-    "href": "example.html#summarized-steps",
-    "title": "03_example",
-    "section": "Summarized Steps",
-    "text": "Summarized Steps\n\nCreate a workbook with two sheets containing the original data and the update data.\nRun core.main\nPaste result into original data file, either manually or w/ the VBA macro found below",
-    "crumbs": [
-      "03_example"
-    ]
-  },
-  {
-    "objectID": "example.html#detailed-process",
-    "href": "example.html#detailed-process",
-    "title": "03_example",
-    "section": "Detailed Process",
-    "text": "Detailed Process\n\nOpen both the original data file and file with updates. Create a new file with two tabs, one containing the update data, the other containing the original data.\n\nVBA snippet can be found below for copying only the required columns from the original data, for cases where the file size is on the larger side.\n\n\nRename the sheet w/ original data to original and rename the sheet w/ updates to update.\nRun the core.main function and copy the result sheet to the original data file.\nRun the paste_subset VBA macro. When prompted, enter the name of the result sheet (by default, it should be result).\n\nAlternatively, if the dataset is small enough, the result can be pasted in manually\n\n\n\nStep by step\nExample files can be found here.\nSteps 1-2 will result in a file similar to example/1_begin.xlsx. Here you can see we have all the main data types in the original sheet: string, dates, boolean, float, and int.\nIn the update sheet you will notice not all cells are filled in because they don’t need to be. If there are no changes, you can leave the cells blank and it won’t overwrite anything - they will be filled with the original values.\nOf note are cells G7 and F8. G7 will clear any existing data and F8 will append the comment to the existing data:\n\n\n\nscreenshot\n\n\nStep 3 is to run the core.main function. Here you specify the unique key/ID column and other parameters.\nfrom update_xl import core \n\n\ncore.main(\n    key_col=\"id\",\n    str_cols=[\"postal_code\"],  # the key column will always be added\n    input_file=\"../example/begin.xlsx\",\n)\nThe result is added to the same input file. Here we have renamed it to 2_middle.xlsx.\nThe changelog is exported in the current working directory in YAML format for better human readability:\n\n\n\nchangelog_screenshot\n\n\nThe result is in the same order as the original data and can be copy/pasted into the original data via VBA script (or manually, if the dataset is small enough).\nPasting in this way preserves any notes added to cells, as can be seen in 3_end.xlsx:\n\n\n\nresult_screenshot\n\n\nOpen the Immediate Window in the developer tab to double check what columns were updated. It should be noted that columns updated in this way need to have unique names, otherwise the result may be unexpected.\n\n\n\nimmediate_window",
-    "crumbs": [
-      "03_example"
-    ]
-  },
-  {
-    "objectID": "example.html#vba-scripts",
-    "href": "example.html#vba-scripts",
-    "title": "03_example",
-    "section": "VBA scripts",
-    "text": "VBA scripts\nThe easiest way to use these scripts is to add it to your Personal.xlsb file and add the commands to the ribbon. This way, you can run macros even in files without the xlsm extension.\n\n\n\nribbon\n\n\n\nCopy original\nSub copy_subset()\n' Creates a new sheet - copies only the columns that need updating from the original data file. \n\nDim input_col_heads As Variant\nDim i As Long\nApplication.ScreenUpdating = False\n\n' Select header cell of key column first\nRange(ActiveCell, ActiveCell.End(xlDown)).Select\n\ncol_head_row = ActiveCell.Row\ntotal_rows = Selection.Rows.Count\n\nSelection.Copy\n\ncurr_sht_name = ActiveSheet.Name\nSheets.Add\nnew_sheet_name = ActiveSheet.Name\n\nSheets(new_sheet_name).Cells(1, 1).Select\nActiveCell.PasteSpecial xlPasteFormats\nActiveCell.PasteSpecial xlPasteValues\n\n' input - select header row of updata data\nSet select_cells = Application.InputBox( _\n  Title:=\"Input\", _\n  Prompt:=\"Select Column Headers in Update Data\", _\n  Type:=8)\ninput_col_heads = select_cells.Value\n\n\nFor i = LBound(input_col_heads, 2) To UBound(input_col_heads, 2)\n\n    col_head_name = input_col_heads(1, i)\n    \n    rel_col = Sheets(curr_sht_name).Cells(col_head_row, 1).EntireRow.Find(What:=col_head_name, _\n    LookIn:=xlValues, LookAt:=xlWhole, SearchOrder:=xlByColumns, _\n    SearchDirection:=xlNext, MatchCase:=True).Column\n    \n    Sheets(curr_sht_name).Activate\n    ActiveSheet.Range(Cells(col_head_row, rel_col), Cells(col_head_row - 1 + total_rows, rel_col)).Select\n    Selection.Copy\n    \n    Sheets(new_sheet_name).Activate\n    Sheets(new_sheet_name).Cells(1, i + 2).Select\n    ActiveCell.PasteSpecial xlPasteFormats\n    ActiveCell.PasteSpecial xlPasteValues\n\nNext i\n\nColumns(\"A\").Select\nSelection.Delete\nColumns(\"A\").Select\nSelection.Delete\n\nApplication.ScreenUpdating = True\n\nEnd Sub\n\n\nPaste result\nSub paste_subset()\n' Paste result into original data. Assumes the result sheet is in the same workbook.\n\nApplication.ScreenUpdating = False\n\n' Select header cell of key column in original data sheet first\noriginal_data_sht = ActiveSheet.Name\nkey_col = ActiveCell.Value\n\ncol_head_row = ActiveCell.Row\nActiveCell.End(xlDown).Select\nt_row_count = ActiveCell.Row\nrow_count = t_row_count + 1 - col_head_row \n\n' input - enter result sheet name\nupdated_data_sht = InputBox(\"Enter name of update result sheet: \", \"Input\", \"result\")\nSheets(updated_data_sht).Select\n\n' get dimensions\n'Cells(1, 1).End(xlDown).Select\n'row_count = ActiveCell.Row\n\nCells(1, 1).End(xlToRight).Select\ncol_count = ActiveCell.Column\n\nDebug.Print (\"Shape:\")\nDebug.Print (row_count - 1)\nDebug.Print (col_count - 1)\nDebug.Print (\"\")\n\n' loop\nFor i = 1 To col_count\n    col_head_name = Cells(1, i)\n    \n    If col_head_name = key_col Then\n        ' pass\n    Else\n        rel_col = Sheets(original_data_sht).Cells(col_head_row, 1).EntireRow.Find(What:=col_head_name, _\n        LookIn:=xlValues, LookAt:=xlWhole, SearchOrder:=xlByColumns, _\n        SearchDirection:=xlNext, MatchCase:=True).Column\n          \n        ActiveSheet.Range(Cells(1, i), Cells(row_count, i)).Select\n        Selection.Copy\n        \n        Sheets(original_data_sht).Activate\n        Sheets(original_data_sht).Cells(col_head_row, rel_col).Select\n        \n        ' data validation\n        Debug.Print (col_head_name)\n        Debug.Print (ActiveCell.Value)\n        Debug.Print (ActiveCell.Address)\n        Debug.Print (\"\")\n        \n        ActiveCell.PasteSpecial xlPasteValues\n        \n        Sheets(updated_data_sht).Activate\n    End If\nNext i\n\nApplication.ScreenUpdating = True\n\nEnd Sub",
-    "crumbs": [
-      "03_example"
-    ]
-  },
-  {
-    "objectID": "compare.html",
-    "href": "compare.html",
-    "title": "01_compare",
-    "section": "",
-    "text": "This was first created when tasked with comparing STCO buyout data files against the database. Figured I could use it here for some (mostly) automated testing.\n\nsource\n\n\n\n compare_cols_minimal (export_dir:str,\n                       merged_df:pandas.core.frame.DataFrame,\n                       key_col:str='id')\n\n…\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nexport_dir\nstr\n\nstr\n\n\nmerged_df\nDataFrame\n\nresult of pd.merge\n\n\nkey_col\nstr\nid\nstr\n\n\nReturns\nNone\n\n\n\n\n\n\nsource\n\n\n\n\n summarize_comparison (dir_:str, ret:bool=False, export_path:str=None,\n                       key_col:str='id')\n\n…\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndir_\nstr\n\nstr - directory used in compare_cols\n\n\nret\nbool\nFalse\nif True, returns df instead of exporting\n\n\nexport_path\nstr\nNone\ndefaults to auto-named file in dir_\n\n\nkey_col\nstr\nid\nkey column\n\n\nReturns\ntyping.Optional[pandas.core.frame.DataFrame]"
-  },
-  {
-    "objectID": "compare.html#bools",
-    "href": "compare.html#bools",
-    "title": "01_compare",
-    "section": "bools",
-    "text": "bools\n\nsource\n\nclean_bools\n\n clean_bools (t_dict:dict)\n\n…\n\n\n\n\nType\nDetails\n\n\n\n\nt_dict\ndict\ndict\n\n\nReturns\ndict\ndict"
-  },
-  {
-    "objectID": "compare.html#ints",
-    "href": "compare.html#ints",
-    "title": "01_compare",
-    "section": "ints",
-    "text": "ints\n\nsource\n\nclean_ints\n\n clean_ints (t_dict:dict)\n\n…\n\n\n\n\nType\nDetails\n\n\n\n\nt_dict\ndict\ndict\n\n\nReturns\ndict\ndict\n\n\n\n\nsource\n\n\nclean_ints2\n\n clean_ints2 (t_dict:dict)\n\n…\n\n\n\n\nType\nDetails\n\n\n\n\nt_dict\ndict\ndict\n\n\nReturns\ndict\ndict"
-  },
-  {
-    "objectID": "compare.html#convert-to-str",
-    "href": "compare.html#convert-to-str",
-    "title": "01_compare",
-    "section": "convert to str",
-    "text": "convert to str\n\nsource\n\nconv2str\n\n conv2str (t_dict:dict)\n\nto match formatting of summarize_comparison\n\n\n\n\nType\nDetails\n\n\n\n\nt_dict\ndict\ndict\n\n\nReturns\ndict\ndict"
-  },
-  {
-    "objectID": "compare.html#main",
-    "href": "compare.html#main",
-    "title": "01_compare",
-    "section": "main",
-    "text": "main\n\nsource\n\nclean_changelog\n\n clean_changelog (changelog:pandas.core.frame.DataFrame)\n\n…\n\n\n\n\nType\nDetails\n\n\n\n\nchangelog\nDataFrame\npd.DataFrame\n\n\nReturns\nDataFrame\npd.DataFrame"
-  },
-  {
-    "objectID": "compare.html#section",
-    "href": "compare.html#section",
-    "title": "01_compare",
-    "section": "1",
-    "text": "1\n\n\nCode\n# * TEST\nif REFRESH:\n    og = pd.read_excel(\"../tests/test_compare/begin.xlsx\", sheet_name=\"original\")\n    updated = pd.read_excel(\"../tests/test_compare/end.xlsx\", sheet_name=\"original\")\n    tm = pd.merge(og, updated, on=\"id\", how=\"inner\")\n    assert og.shape[0] == updated.shape[0]\n    assert og.shape[0] == tm.shape[0]\n\n    # compare_cols_minimal(\"../tests/test_compare/out/\", tm)\n    df = summarize_comparison(\"../tests/test_compare/out/\", True)\n\n    changelog = pd.read_excel(\n        \"../tests/test_compare/end.xlsx\", sheet_name=\"changelog\", converters={\"id\": str}\n    )\n    changelog = clean_changelog(changelog)\n\n\n\n\nCode\n# * DOC\ndf\n\n\n\n\n\n\n\n\n\nid\ninfo\n\n\n\n\n0\n9230418\n{'amt': ['8682.97', ''], 'comment': ['Vitae pr...\n\n\n1\n3829278\n{'amt': ['94.58', '123.45'], 'rand_int': ['185...\n\n\n2\n3696181\n{'comment': ['Perferendis earum omnis adipisci...\n\n\n3\n3100145\n{'comment': ['Alias vitae beatae commodi accus...\n\n\n4\n6514643\n{'comment': ['Repudiandae cum assumenda rem ut...\n\n\n5\n7914200\n{'comment': ['Et dolorem eaque eius suscipit.'...\n\n\n6\n3582428\n{'comment': ['Libero veritatis illo iure et ve...\n\n\n7\n6923572\n{'comment': ['Velit repellendus illo temporibu...\n\n\n8\n5366721\n{'comment': ['Quos atque rerum provident magni...\n\n\n9\n4678758\n{'dob': ['2010-07-17 00:00:00', '1901-01-01 00...\n\n\n10\n5256904\n{'dob_verified': ['1', '0']}\n\n\n11\n8384660\n{'fname': ['Destiny', 'Bob'], 'lname': ['White...\n\n\n\n\n\n\n\n\n\nCode\n# * DOC\nchangelog\n\n\n\n\n\n\n\n\n\nid\nchanges\n\n\n\n\n0\n3696181\n{'comment': ['Perferendis earum omnis adipisci...\n\n\n1\n3100145\n{'comment': ['Alias vitae beatae commodi accus...\n\n\n2\n6514643\n{'comment': ['Repudiandae cum assumenda rem ut...\n\n\n3\n7914200\n{'comment': ['Et dolorem eaque eius suscipit.'...\n\n\n4\n3582428\n{'comment': ['Libero veritatis illo iure et ve...\n\n\n5\n9230418\n{'comment': ['Vitae praesentium aliquam qui qu...\n\n\n6\n6923572\n{'comment': ['Velit repellendus illo temporibu...\n\n\n7\n5366721\n{'comment': ['Quos atque rerum provident magni...\n\n\n8\n8384660\n{'fname': ['Destiny', 'Bob'], 'lname': ['White...\n\n\n9\n4678758\n{'dob': ['2010-07-17 00:00:00', '1901-01-01 00...\n\n\n10\n5256904\n{'dob_verified': ['1', '0']}\n\n\n11\n3829278\n{'amt': ['94.58', '123.45'], 'rand_int': ['185...\n\n\n\n\n\n\n\n\n\nCode\n# * TEST\nif REFRESH:\n    tm = pd.merge(df, changelog, \"inner\", \"id\")\n    assert len(tm) == len(df)\n    assert len(tm) == len(changelog)\n    m = tm[\"info\"] == tm[\"changes\"]\n    assert tm[~m].shape[0] == 0\n\n\n\n\nCode\n# * DOC\ntm\n\n\n\n\n\n\n\n\n\nid\ninfo\nchanges\n\n\n\n\n0\n9230418\n{'amt': ['8682.97', ''], 'comment': ['Vitae pr...\n{'comment': ['Vitae praesentium aliquam qui qu...\n\n\n1\n3829278\n{'amt': ['94.58', '123.45'], 'rand_int': ['185...\n{'amt': ['94.58', '123.45'], 'rand_int': ['185...\n\n\n2\n3696181\n{'comment': ['Perferendis earum omnis adipisci...\n{'comment': ['Perferendis earum omnis adipisci...\n\n\n3\n3100145\n{'comment': ['Alias vitae beatae commodi accus...\n{'comment': ['Alias vitae beatae commodi accus...\n\n\n4\n6514643\n{'comment': ['Repudiandae cum assumenda rem ut...\n{'comment': ['Repudiandae cum assumenda rem ut...\n\n\n5\n7914200\n{'comment': ['Et dolorem eaque eius suscipit.'...\n{'comment': ['Et dolorem eaque eius suscipit.'...\n\n\n6\n3582428\n{'comment': ['Libero veritatis illo iure et ve...\n{'comment': ['Libero veritatis illo iure et ve...\n\n\n7\n6923572\n{'comment': ['Velit repellendus illo temporibu...\n{'comment': ['Velit repellendus illo temporibu...\n\n\n8\n5366721\n{'comment': ['Quos atque rerum provident magni...\n{'comment': ['Quos atque rerum provident magni...\n\n\n9\n4678758\n{'dob': ['2010-07-17 00:00:00', '1901-01-01 00...\n{'dob': ['2010-07-17 00:00:00', '1901-01-01 00...\n\n\n10\n5256904\n{'dob_verified': ['1', '0']}\n{'dob_verified': ['1', '0']}\n\n\n11\n8384660\n{'fname': ['Destiny', 'Bob'], 'lname': ['White...\n{'fname': ['Destiny', 'Bob'], 'lname': ['White...\n\n\n\n\n\n\n\n\n\nCode\n# * DOC\nm = tm[\"info\"] == tm[\"changes\"]\ntm[~m]\n\n\n\n\n\n\n\n\n\nid\ninfo\nchanges"
-  },
-  {
-    "objectID": "compare.html#section-1",
-    "href": "compare.html#section-1",
-    "title": "01_compare",
-    "section": "2",
-    "text": "2\n\n\nCode\n# * TEST\nif REFRESH:\n    og = pd.read_excel(\"../tests/new/0/og_db0 - Copy.xlsx\")\n    updated = pd.read_excel(\"../tests/new/0/og_db0.xlsx\")\n    tm = pd.merge(og, updated, on=\"id\", how=\"inner\")\n    assert og.shape[0] == updated.shape[0]\n    assert og.shape[0] == tm.shape[0]\n\n    # compare_cols_minimal(\"../tests/new/0/out/\", tm)\n    df = summarize_comparison(\"../tests/new/0/out/\", True)\n\n    changelog = pd.read_excel(\n        \"../tests/new/0/up1.xlsx\", sheet_name=\"changelog\", converters={\"id\": str}\n    )\n    changelog = clean_changelog(changelog)\n\n    tm = pd.merge(df, changelog, \"inner\", \"id\")\n    assert len(tm) == len(df)\n    assert len(tm) == len(changelog)\n    m = tm[\"info\"] == tm[\"changes\"]\n    assert tm[~m].shape[0] == 0"
-  },
-  {
-    "objectID": "compare.html#section-2",
-    "href": "compare.html#section-2",
-    "title": "01_compare",
-    "section": "3",
-    "text": "3\n\n\nCode\n# * TEST\nif REFRESH:\n    _tst(\"../tests/new/1\")"
-  },
-  {
-    "objectID": "compare.html#section-3",
-    "href": "compare.html#section-3",
-    "title": "01_compare",
-    "section": "4",
-    "text": "4\n\n\nCode\n# * TEST\nif REFRESH:\n    _tst(\"../tests/new/2\")"
-  },
-  {
-    "objectID": "compare.html#section-4",
-    "href": "compare.html#section-4",
-    "title": "01_compare",
-    "section": "5",
-    "text": "5\n\n\nCode\n# * TEST\nif REFRESH:\n    _tst(\"../tests/new/3\")"
-  },
-  {
-    "objectID": "compare.html#section-5",
-    "href": "compare.html#section-5",
-    "title": "01_compare",
-    "section": "6",
-    "text": "6\n\n\nCode\n# * TEST\nif REFRESH:\n    _tst(\"../tests/new/4\")"
-  },
-  {
-    "objectID": "compare.html#section-6",
-    "href": "compare.html#section-6",
-    "title": "01_compare",
-    "section": "7",
-    "text": "7\nID in update not in original data\n\n\nCode\n# * TEST\nwith pytest.raises(\n    AssertionError, match=\"Length mismatch after inner join for update_df\"\n):\n    uxl.main(\n        key_col=\"id\",\n        str_cols=[\"pc\"],\n        input_file=\"../tests/new/5/fail0.xlsx\",\n    )\n\n\nDuplicate ID in original\n\n\nCode\n# * TEST\nwith pytest.raises(Exception, match=\"Duplicate keys in original_df\"):\n    uxl.main(\n        key_col=\"id\",\n        str_cols=[\"pc\"],\n        input_file=\"../tests/new/5/fail1.xlsx\",\n    )\n\n\nDuplicate ID in updates tab\n\n\nCode\n# * TEST\nwith pytest.raises(Exception, match=\"Duplicate keys in update_df\"):\n    uxl.main(\n        key_col=\"id\",\n        str_cols=[\"pc\"],\n        input_file=\"../tests/new/5/fail2.xlsx\",\n    )\n\n\nDuplicate column name in update tab\n\n\nCode\n# * TEST\nwith pytest.raises(Exception, match=\"Check for duplicate column names in update df\"):\n    uxl.main(\n        key_col=\"id\",\n        str_cols=[\"pc\"],\n        input_file=\"../tests/new/5/fail3.xlsx\",\n    )"
-  },
-  {
-    "objectID": "compare.html#section-7",
-    "href": "compare.html#section-7",
-    "title": "01_compare",
-    "section": "8",
-    "text": "8\n\nif REFRESH:\n    _tst(\"../tests/new/6\")"
   },
   {
     "objectID": "core.html",
     "href": "core.html",
     "title": "00_core",
     "section": "",
-    "text": "source\n\n\n\n yaml_helper (fpath:str='./config.yaml', mode:str='r', data:dict=None)\n\nHelper function to read, write, append to files in yaml format. Checks for duplicate keys if reading or appending.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfpath\nstr\n./config.yaml\nstr\n\n\nmode\nstr\nr\nstr - r / a / w\n\n\ndata\ndict\nNone\ndict - cannot be None if writing or appending\n\n\nReturns\ndict\n\ndict - data if reading, {‘r’: 0} if writing/appending\n\n\n\n\nsource\n\n\n\n\n fp (relative_fp:str, base_dir:str='.')\n\nFor referencing relative file paths in package directory.\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nrelative_fp\nstr\n\nstr - eg. “../dir/file.txt”\n\n\nbase_dir\nstr\n.\nstr\n\n\nReturns\nstr\n\nstr",
+    "text": "fp (_path:str='', ambiguous_err:bool=True)\n\nFor referencing relative file paths in dev env. Assumes core is always one level down from project root directory.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\n_path\nstr\n\nstr - eg. \"../dat/some_file.csv\" == \"&lt;project_root&gt;/dat/some_file.csv&gt;\"\n\n\nambiguous_err\nbool\nTrue\nbool - if True, will raise exception if path is ambiguous when running docs generation vs dev env\n\n\nReturns\nstr\n\nstr\n\n\n\n\n\n\n\n\n yaml_helper (fpath:str='./config.yaml', mode:str='r',\n              data:Optional[dict]=None)\n\nHelper function to read, write, append to files in yaml format. Checks for duplicate keys if reading or appending.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfpath\nstr\n./config.yaml\nstr\n\n\nmode\nstr\nr\nstr - r / a / w\n\n\ndata\nOptional\nNone\ncannot be None if writing or appending\n\n\nReturns\ndict\n\ndict - data if reading, {‘r’: 0} if writing/appending",
     "crumbs": [
       "00_core"
     ]
@@ -165,44 +24,59 @@
     "href": "core.html#main",
     "title": "00_core",
     "section": "main",
-    "text": "main\n\nsource\n\nmain\n\n main (key_col:str, str_cols:list=None, input_file:str='./Book1.xlsx')\n\n…\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nkey_col\nstr\n\nunique id column\n\n\nstr_cols\nlist\nNone\nAdd all cols where there may be leading zeroes that should be preserved, or if the values should be read in as string.\n\n\ninput_file\nstr\n./Book1.xlsx\nname/path to input file\n\n\nReturns\nNone",
+    "text": "main\n\n\nmain\n\n main (key_col:str, str_cols:Optional[list]=None,\n       input_file:str='./Book1.xlsx', _changelog_dir:str='./')\n\n…\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nkey_col\nstr\n\nunique id column\n\n\nstr_cols\nOptional\nNone\nAdd all cols where there may be leading zeroes that should be preserved, or if the values should be read in as string.\n\n\ninput_file\nstr\n./Book1.xlsx\nname/path to input file\n\n\n_changelog_dir\nstr\n./\nset path for changelog yml output\n\n\nReturns\nNone",
     "crumbs": [
       "00_core"
     ]
   },
   {
-    "objectID": "test_update_xl.html",
-    "href": "test_update_xl.html",
-    "title": "02_test_update_xl",
+    "objectID": "example.html",
+    "href": "example.html",
+    "title": "01_example",
     "section": "",
-    "text": "source\n\n\n\n yaml_helper (fpath:str='./config.yaml', mode:str='r', data:dict=None)\n\nHelper function to read, write, append to files in yaml format. Checks for duplicate keys if reading or appending.\n\n\n\n\n\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nfpath\nstr\n./config.yaml\nstr\n\n\nmode\nstr\nr\nstr - r / a / w\n\n\ndata\ndict\nNone\ndict - cannot be None if writing or appending\n\n\nReturns\ndict\n\ndict - data if reading, {‘r’: 0} if writing/appending\n\n\n\n\nsource\n\n\n\n\n fp (relative_fp:str, base_dir:str='.')\n\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\nrelative_fp\nstr\n\nstr - eg. “../dir/file.txt”\n\n\nbase_dir\nstr\n.\nstr\n\n\nReturns\nstr\n\nstr"
+    "text": "Code\nfrom IPython.display import HTML\n\n\nHTML(\n    \"\"\"\n&lt;video width=\"640\" height=\"480\" controls&gt;\n  &lt;source src=\"demo.mp4\" type=\"video/mp4\"&gt;\n&lt;/video&gt;\n\"\"\"\n)",
+    "crumbs": [
+      "01_example"
+    ]
   },
   {
-    "objectID": "test_update_xl.html#helpers",
-    "href": "test_update_xl.html#helpers",
-    "title": "02_test_update_xl",
-    "section": "helpers",
-    "text": "helpers\n\n\nCode\n# * TEST\nwith pytest.raises(Exception, match=\"unable to parse\"):\n    pd.to_datetime(\"sddsdsd\")"
-  },
-  {
-    "objectID": "test_update_xl.html#main",
-    "href": "test_update_xl.html#main",
-    "title": "02_test_update_xl",
-    "section": "main",
-    "text": "main\n\nsource\n\ntest0\n\n test0 ()\n\n\nsource\n\n\ntest0a\n\n test0a ()\n\n\nsource\n\n\ntest1\n\n test1 ()\n\n\nsource\n\n\ntest1a\n\n test1a ()\n\n\nsource\n\n\ntest1b\n\n test1b ()\n\n\nsource\n\n\ntest2\n\n test2 ()\n\n\nsource\n\n\ntest2a\n\n test2a ()\n\n\nsource\n\n\ntest3\n\n test3 ()\n\ntest appending to blank cell (original data)\n\nsource\n\n\ntest3a\n\n test3a ()\n\n\nsource\n\n\ntest4\n\n test4 ()\n\ntest blank cells are replaced by original vals\n\nsource\n\n\ntest4a\n\n test4a ()"
-  },
-  {
-    "objectID": "changelog.html",
-    "href": "changelog.html",
-    "title": "04_changelog",
+    "objectID": "example.html#demo",
+    "href": "example.html#demo",
+    "title": "01_example",
     "section": "",
-    "text": "source\n\n\n\n clean_changelog (df:pandas.core.frame.DataFrame,\n                  _fp:str='./changelog.yml')\n\n…\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndf\nDataFrame\n\npd.DataFrame\n\n\n_fp\nstr\n./changelog.yml\nstr\n\n\nReturns\nNone"
+    "text": "Code\nfrom IPython.display import HTML\n\n\nHTML(\n    \"\"\"\n&lt;video width=\"640\" height=\"480\" controls&gt;\n  &lt;source src=\"demo.mp4\" type=\"video/mp4\"&gt;\n&lt;/video&gt;\n\"\"\"\n)",
+    "crumbs": [
+      "01_example"
+    ]
   },
   {
-    "objectID": "changelog.html#main",
-    "href": "changelog.html#main",
-    "title": "04_changelog",
-    "section": "",
-    "text": "source\n\n\n\n clean_changelog (df:pandas.core.frame.DataFrame,\n                  _fp:str='./changelog.yml')\n\n…\n\n\n\n\nType\nDefault\nDetails\n\n\n\n\ndf\nDataFrame\n\npd.DataFrame\n\n\n_fp\nstr\n./changelog.yml\nstr\n\n\nReturns\nNone"
+    "objectID": "example.html#summarized-steps",
+    "href": "example.html#summarized-steps",
+    "title": "01_example",
+    "section": "Summarized Steps",
+    "text": "Summarized Steps\n\nCreate a workbook with two sheets containing the original data and the update data.\nRun core.main\nPaste result into original data file, either manually or w/ the VBA macro found below",
+    "crumbs": [
+      "01_example"
+    ]
+  },
+  {
+    "objectID": "example.html#detailed-process",
+    "href": "example.html#detailed-process",
+    "title": "01_example",
+    "section": "Detailed Process",
+    "text": "Detailed Process\n\nOpen both the original data file and file with updates. Create a new file with two tabs, one containing the update data, the other containing the original data.\n\nVBA snippet can be found below for copying only the required columns from the original data, for cases where the file size is on the larger side.\n\n\nRename the sheet w/ original data to original and rename the sheet w/ updates to update.\nRun the core.main function and copy the result sheet to the original data file.\nRun the paste_subset VBA macro. When prompted, enter the name of the result sheet (by default, it should be result).\n\nAlternatively, if the dataset is small enough, the result can be pasted in manually\n\n\n\nStep by step\nExample files can be found here.\nSteps 1-2 will result in a file similar to example/1_begin.xlsx. Here you can see we have all the main data types in the original sheet: string, dates, boolean, float, and int.\nIn the update sheet you will notice not all cells are filled in because they don’t need to be. If there are no changes, you can leave the cells blank and it won’t overwrite anything - they will be filled with the original values.\nOf note are cells G7 and F8. G7 will clear any existing data and F8 will append the comment to the existing data:\n\n\n\nscreenshot\n\n\nStep 3 is to run the core.main function. Here you specify the unique key/ID column and other parameters.\nfrom update_xl import core \n\n\ncore.main(\n    key_col=\"id\",\n    str_cols=[\"postal_code\"],  # the key column will always be added\n    input_file=\"../example/begin.xlsx\",\n)\nThe result is added to the same input file. Here we have renamed it to 2_middle.xlsx.\nThe changelog is exported in the current working directory in YAML format for better human readability:\n\n\n\nchangelog_screenshot\n\n\nThe result is in the same order as the original data and can be copy/pasted into the original data via VBA script (or manually, if the dataset is small enough).\nPasting in this way preserves any notes added to cells, as can be seen in 3_end.xlsx:\n\n\n\nresult_screenshot\n\n\nOpen the Immediate Window in the developer tab to double check what columns were updated. It should be noted that columns updated in this way need to have unique names, otherwise the result may be unexpected.\n\n\n\nimmediate_window",
+    "crumbs": [
+      "01_example"
+    ]
+  },
+  {
+    "objectID": "example.html#vba-scripts",
+    "href": "example.html#vba-scripts",
+    "title": "01_example",
+    "section": "VBA scripts",
+    "text": "VBA scripts\nThe easiest way to use these scripts is to add it to your Personal.xlsb file and add the commands to the ribbon. This way, you can run macros even in files without the xlsm extension.\n\n\n\nribbon\n\n\n\nCopy original\nSub copy_subset()\n' Creates a new sheet - copies only the columns that need updating from the original data file. \n\nDim input_col_heads As Variant\nDim i As Long\nApplication.ScreenUpdating = False\n\n' Select header cell of key column first\nRange(ActiveCell, ActiveCell.End(xlDown)).Select\n\ncol_head_row = ActiveCell.Row\ntotal_rows = Selection.Rows.Count\n\nSelection.Copy\n\ncurr_sht_name = ActiveSheet.Name\nSheets.Add\nnew_sheet_name = ActiveSheet.Name\n\nSheets(new_sheet_name).Cells(1, 1).Select\nActiveCell.PasteSpecial xlPasteFormats\nActiveCell.PasteSpecial xlPasteValues\n\n' input - select header row of updata data\nSet select_cells = Application.InputBox( _\n  Title:=\"Input\", _\n  Prompt:=\"Select Column Headers in Update Data\", _\n  Type:=8)\ninput_col_heads = select_cells.Value\n\n\nFor i = LBound(input_col_heads, 2) To UBound(input_col_heads, 2)\n\n    col_head_name = input_col_heads(1, i)\n    \n    rel_col = Sheets(curr_sht_name).Cells(col_head_row, 1).EntireRow.Find(What:=col_head_name, _\n    LookIn:=xlValues, LookAt:=xlWhole, SearchOrder:=xlByColumns, _\n    SearchDirection:=xlNext, MatchCase:=True).Column\n    \n    Sheets(curr_sht_name).Activate\n    ActiveSheet.Range(Cells(col_head_row, rel_col), Cells(col_head_row - 1 + total_rows, rel_col)).Select\n    Selection.Copy\n    \n    Sheets(new_sheet_name).Activate\n    Sheets(new_sheet_name).Cells(1, i + 2).Select\n    ActiveCell.PasteSpecial xlPasteFormats\n    ActiveCell.PasteSpecial xlPasteValues\n\nNext i\n\nColumns(\"A\").Select\nSelection.Delete\nColumns(\"A\").Select\nSelection.Delete\n\nApplication.ScreenUpdating = True\n\nEnd Sub\n\n\nPaste result\nSub paste_subset()\n' Paste result into original data. Assumes the result sheet is in the same workbook.\n\nApplication.ScreenUpdating = False\n\n' Select header cell of key column in original data sheet first\noriginal_data_sht = ActiveSheet.Name\nkey_col = ActiveCell.Value\n\ncol_head_row = ActiveCell.Row\nActiveCell.End(xlDown).Select\nt_row_count = ActiveCell.Row\nrow_count = t_row_count + 1 - col_head_row \n\n' input - enter result sheet name\nupdated_data_sht = InputBox(\"Enter name of update result sheet: \", \"Input\", \"result\")\nSheets(updated_data_sht).Select\n\n' get dimensions\n'Cells(1, 1).End(xlDown).Select\n'row_count = ActiveCell.Row\n\nCells(1, 1).End(xlToRight).Select\ncol_count = ActiveCell.Column\n\nDebug.Print (\"Shape:\")\nDebug.Print (row_count - 1)\nDebug.Print (col_count - 1)\nDebug.Print (\"\")\n\n' loop\nFor i = 1 To col_count\n    col_head_name = Cells(1, i)\n    \n    If col_head_name = key_col Then\n        ' pass\n    Else\n        rel_col = Sheets(original_data_sht).Cells(col_head_row, 1).EntireRow.Find(What:=col_head_name, _\n        LookIn:=xlValues, LookAt:=xlWhole, SearchOrder:=xlByColumns, _\n        SearchDirection:=xlNext, MatchCase:=True).Column\n          \n        ActiveSheet.Range(Cells(1, i), Cells(row_count, i)).Select\n        Selection.Copy\n        \n        Sheets(original_data_sht).Activate\n        Sheets(original_data_sht).Cells(col_head_row, rel_col).Select\n        \n        ' data validation\n        Debug.Print (col_head_name)\n        Debug.Print (ActiveCell.Value)\n        Debug.Print (ActiveCell.Address)\n        Debug.Print (\"\")\n        \n        ActiveCell.PasteSpecial xlPasteValues\n        \n        Sheets(updated_data_sht).Activate\n    End If\nNext i\n\nApplication.ScreenUpdating = True\n\nEnd Sub",
+    "crumbs": [
+      "01_example"
+    ]
   }
 ]
